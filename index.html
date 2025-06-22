@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Simples</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <h2>Login</h2>
+    <form>
+        <label for="usuario">Usuário:</label><br>
+        <input type="text" id="usuario" name="usuario"><br><br>
+        <label for="senha">Senha:</label><br>
+        <input type="password" id="senha" name="senha"><br><br>
+        <button type="submit">Entrar</button>
+        <button type="EsqueciSenha" onclick="alert('Recuperação de senha não implementada, Estamos trabalhando nisso ainda.')">Esqueci minha senha</button>
+    <button type="Registrar" onclick="alert('Registro não implementado, Estamos trabalhando nisso ainda.')">Registrar</button>
+    <p>Não tem uma conta? <a href="#">Registrar</a></p>
+    </form>
+    <script>
+        // Aqui você pode adicionar scripts JavaScript para funcionalidades adicionais
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio do formulário para fins de demonstração
+            alert('Formulário enviado!');
+        });
+    </script>
+    <footer>
+        <p>&copy; 2025 Ruan Guilherme Niza De Oliveira. Todos os direitos reservados.</p>
+</body>
+</html>
