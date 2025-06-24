@@ -5,47 +5,6 @@
     <title>Registro</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-    <style>
-        h2 {
-            text-align: center;
-            color: #545454;
-            margin-top: 40px;
-            scrollbar-width: thin; /* Define a largura da barra de rolagem */
-            scrollbar-color: #545454 transparent; /* Define a cor da barra de rolagem e do fundo */
-            scroll-padding: 0; /* Remove o espaçamento de rolagem */
-            page-orientation: portrait; /* Define a orientação da página como retrato */
-        }
-        .bola {
-            width: 20px;
-            height: 20px;
-            background-color: rgb(99, 99, 99);
-            border-radius: 50%;
-            position: absolute;
-            pointer-events: none;
-            border-color: aqua;
-            border-width: 1px;
-            border-style: dashed;
-            transform: translate(-75%, -75%);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Adiciona sombra */
-        }
-        .bola-seguidora {
-            width: 25px;
-            height: 25px;
-            background-color: rgb(51, 51, 51);
-            border-radius: 50%;
-            border-color: aqua;
-            border-width: 1px;
-            border-style: dashed;
-            position: absolute;
-            pointer-events: none;
-            transform: translate(-75%, -75%);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Adiciona sombra */
-        }
-        body.registro {
-            overflow-y: auto; /* Permite rolagem vertical */
-            cursor: none; /* Mantém o cursor escondido */
-        }
-    </style>
 </head>
 <body>
     <h2>Registro</h2>
@@ -68,38 +27,27 @@
         <button type="submit">Registrar</button>
         <p>Já tem uma conta? <a href="index.html">Fazer Login</a></p>
     </form>
-    <div class="bola" id="bola"></div>
-    <div class="bola-seguidora" id="bolaSeguidora"></div>
     <footer>
         <p>&copy; 2025 Ruan Guilherme Niza De Oliveira. Todos os direitos reservados.</p>
     </footer>
     <script>
-        const bola = document.getElementById('bola');
-        const bolaSeguidora = document.getElementById('bolaSeguidora');
+        document.querySelector('form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Impede o envio do formulário
 
-        let posicoes = []; // Armazena as posições da bola principal
+            const username = document.getElementById('usuario').value;
+            const password = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
 
-        document.addEventListener('mousemove', (event) => {
-            const x = event.clientX;
-            const y = event.clientY;
-
-            // Atualiza a posição da bola principal
-            bola.style.left = `${x}px`;
-            bola.style.top = `${y}px`;
-
-            // Armazena a posição atual da bola principal
-            posicoes.push({ x, y });
-
-            // Limita o tamanho do array para criar o atraso
-            if (posicoes.length > 10) {
-                posicoes.shift(); // Remove a posição mais antiga
+            // Verifica se as senhas coincidem
+            if (password !== confirmarSenha) {
+                alert('As senhas não coincidem!');
+                return;
             }
 
-            // Atualiza a posição da bola seguidora com atraso
-            if (posicoes.length > 0) {
-                const posicaoAtrasada = posicoes[0];
-                bolaSeguidora.style.left = `${posicaoAtrasada.x}px`;
-                bolaSeguidora.style.top = `${posicaoAtrasada.y}px`;
+            // Chama a função para registrar o usuário
+            const sucesso = await registrarUsuario(username, password);
+            if (sucesso) {
+                window.location.href = 'index.html'; // Redireciona para a página de login
             }
         });
     </script>
