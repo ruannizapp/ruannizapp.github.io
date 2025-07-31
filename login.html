@@ -5,11 +5,38 @@
     <title>Login Simples</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            cursor: auto;
+            cursor: none; /* Esconde o cursor do mouse */
+        }
+        .bola {
+            width: 20px;
+            height: 20px;
+            background-color: rgb(99, 99, 99);
+            border-radius: 50%;
+            position: absolute;
+            pointer-events: none;
+            border-color: aqua;
+            border-width: 1px;
+            border-style: dashed;
+            transform: translate(-75%, -75%);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Adiciona sombra */
+        }
+        .bola-seguidora {
+            width: 25px;
+            height: 25px;
+            background-color: rgb(51, 51, 51);
+            border-radius: 50%;
+            border-color: aqua;
+            border-width: 1px;
+            border-style: dashed;
+            position: absolute;
+            pointer-events: none;
+            transform: translate(-75%, -75%);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Adiciona sombra */
         }
     </style>
 </head>
@@ -21,27 +48,65 @@
         <label for="senha">Senha:</label><br>
         <input type="password" id="senha" name="senha"><br><br>
         <button type="submit">Entrar</button>
-        <button type="button" onclick="alert('Recuperação de senha ainda não implementada, Estamos trabalhando nisso ainda.')">Esqueci minha senha</button>
+        <button type="button" onclick="alert('Recuperação de senha não implementada, Estamos trabalhando nisso ainda.')">Esqueci minha senha</button>
         <button type="button" onclick="window.location.href='registro.html'">Registrar</button>
         <p>Não tem uma conta? <a href="registro.html">Registrar</a></p>
     </form>
-    <script>
-        document.querySelector('form').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Impede o envio do formulário
-
-            const username = document.getElementById('usuario').value;
-            const password = document.getElementById('senha').value;
-
-            // Chama a função para verificar o login
-            const sucesso = await verificarUsuario(username, password);
-            if (sucesso) {
-                alert('Bem-vindo, ' + username + '!');
-                // Aqui você pode redirecionar para outra página, se necessário
-            }
-        });
-    </script>
     <div class="bola" id="bola"></div>
     <div class="bola-seguidora" id="bolaSeguidora"></div>
+    <div id="g_id_onload"
+         data-client_id="3372701691-r6bs01439n96ovicqbpp0uv29uelo210.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin"
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-size="large">
+    </div>
+    <script>
+        // Aqui você pode adicionar scripts JavaScript para funcionalidades adicionais
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio do formulário para fins de demonstração
+            alert('Formulário enviado!');
+        });
+
+        // Bola seguindo o mouse
+        const bola = document.getElementById('bola');
+        const bolaSeguidora = document.getElementById('bolaSeguidora');
+
+        let posicoes = []; // Armazena as posições da bola principal
+
+        document.addEventListener('mousemove', (event) => {
+            const x = event.pageX;
+            const y = event.pageY;
+
+            // Atualiza a posição da bola principal
+            bola.style.left = `${x}px`;
+            bola.style.top = `${y}px`;
+
+            // Armazena a posição atual da bola principal
+            posicoes.push({ x, y });
+
+            // Limita o tamanho do array para criar o atraso
+            if (posicoes.length > 10) {
+                posicoes.shift(); // Remove a posição mais antiga
+            }
+
+            // Atualiza a posição da bola seguidora com atraso
+            if (posicoes.length > 0) {
+                const posicaoAtrasada = posicoes[0];
+                bolaSeguidora.style.left = `${posicaoAtrasada.x}px`;
+                bolaSeguidora.style.top = `${posicaoAtrasada.y}px`;
+            }
+        });
+
+        function handleCredentialResponse(response) {
+            // Aqui você pode enviar o token para seu backend ou exibir o login
+            alert("Login Google realizado! Token JWT:\n" + response.credential);
+        }
+    </script>
     <footer>
         <p>&copy; 2025 Ruan Guilherme Niza De Oliveira. Todos os direitos reservados.</p>
     </footer>
